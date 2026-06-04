@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+*.log
+
+# Node
+node_modules/
+.next/
+dist/
+
+# Database
+*.db
+*.sqlite3
+
+# Vector store
+vector_store/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+config.local.py
+settings.local.py
+*.key
+*.pem

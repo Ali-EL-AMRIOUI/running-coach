@@ -1,0 +1,131 @@
+.
+├── Makefile
+├── README.md
+├── backend
+│   ├── api
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── feedback.py
+│   │   ├── payments.py
+│   │   ├── plans.py
+│   │   ├── users.py
+│   │   ├── webhooks.py
+│   │   └── workouts.py
+│   ├── config.py
+│   ├── core
+│   │   ├── __init__.py
+│   │   ├── agents
+│   │   │   ├── __init__.py
+│   │   │   ├── analyzer_agent.py
+│   │   │   ├── base_agent.py
+│   │   │   ├── explainer_agent.py
+│   │   │   ├── orchestrator.py
+│   │   │   ├── planner_agent.py
+│   │   │   ├── retriever_agent.py
+│   │   │   └── validator_agent.py
+│   │   ├── llm
+│   │   │   ├── __init__.py
+│   │   │   └── prompts.py
+│   │   ├── rag
+│   │   └── rules
+│   │       ├── __init__.py
+│   │       ├── formulas.py
+│   │       ├── progression_rules.py
+│   │       └── safety_rules.py
+│   ├── db
+│   │   ├── __init__.py
+│   │   ├── crud.py
+│   │   ├── database.py
+│   │   ├── migrations
+│   │   │   └── versions
+│   │   └── models.py
+│   ├── main.py
+│   ├── patch_schema.py
+│   ├── requirements.txt
+│   ├── run.py
+│   ├── running_coach.db
+│   ├── schemas
+│   │   ├── __init__.py
+│   │   ├── feedback.py
+│   │   ├── payment.py
+│   │   ├── plan.py
+│   │   ├── user.py
+│   │   └── workout.py
+│   ├── scripts
+│   │   ├── index_books_direct.py
+│   │   ├── start_infinity.sh
+│   │   └── test_generation.py
+│   ├── services
+│   │   ├── __init__.py
+│   │   ├── auth_service.py
+│   │   ├── email_service.py
+│   │   ├── payment_service.py
+│   │   ├── strava_service.py
+│   │   └── user_service.py
+│   ├── tests
+│   │   ├── __init__.py
+│   │   ├── conftest.py
+│   │   ├── test_api
+│   │   │   ├── test_auth.py
+│   │   │   ├── test_payments.py
+│   │   │   └── test_plans.py
+│   │   ├── test_core
+│   │   │   ├── test_formulas.py
+│   │   │   ├── test_rules.py
+│   │   │   └── test_validator.py
+│   │   └── test_services
+│   │       └── test_plan_service.py
+│   └── utils
+│       ├── __init__.py
+│       ├── auth.py
+│       ├── decorators.py
+│       ├── exceptions.py
+│       ├── helpers.py
+│       └── logger.py
+├── docker
+├── docker-compose.yml
+├── frontend
+│   ├── AGENTS.md
+│   ├── CLAUDE.md
+│   ├── README.md
+│   ├── app
+│   │   ├── dashboard
+│   │   │   └── page.tsx
+│   │   ├── favicon.ico
+│   │   ├── generate
+│   │   │   └── page.tsx
+│   │   ├── globals.css
+│   │   ├── layout.tsx
+│   │   ├── login
+│   │   │   └── page.tsx
+│   │   ├── page.tsx
+│   │   ├── plan
+│   │   │   └── [id]
+│   │   │       └── page.tsx
+│   │   └── register
+│   │       └── page.tsx
+│   ├── eslint.config.mjs
+│   ├── lib
+│   │   ├── api.ts
+│   │   └── validation
+│   │       └── planSchema.ts
+│   ├── next-env.d.ts
+│   ├── next.config.ts
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── postcss.config.js
+│   ├── postcss.config.mjs.bak
+│   ├── public
+│   │   ├── file.svg
+│   │   ├── globe.svg
+│   │   ├── next.svg
+│   │   ├── vercel.svg
+│   │   └── window.svg
+│   ├── tailwind.config.ts
+│   └── tsconfig.json
+├── k8s
+├── notebooks
+├── projet_structure.txt
+└── requirements.txt
+
+33 directories, 96 files
