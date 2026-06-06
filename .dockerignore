@@ -1,0 +1,13 @@
+**/venv/
+**/.venv/
+**/node_modules/
+
+# Ignorer les volumes de données Docker
+**/postgres_data/
+**/ollama_data/
+
+# Ignorer Git et les configurations d'IDE
+.git
+.gitignore
+.vscode/
+.idea/

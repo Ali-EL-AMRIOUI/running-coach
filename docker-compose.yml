@@ -1,44 +1,60 @@
-version: '3.8'
 services:
+
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: running_coach
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${POSTGRES_USER:-user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  ollama:
-    image: ollama/ollama:latest
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
     ports:
-      - "11434:11434"
+      - "6333:6333"
     volumes:
-      - ollama_data:/root/.ollama
+      - qdrant_data:/qdrant/storage
+
+  infinity:
+    image: michaelf34/infinity:latest
+    restart: unless-stopped
+    command: ["v2", "--model-id", "BAAI/bge-m3", "--model-id", "BAAI/bge-reranker-v2-m3", "--port", "7997", "--no-bettertransformer"]
+    ports:
+      - "7997:7997"
+    volumes:
+      - infinity_cache:/app/.cache
 
   backend:
     build:
       context: .
       dockerfile: docker/backend.Dockerfile
+    restart: unless-stopped
     ports:
       - "8000:8000"
+    env_file:
+      - ./backend/.env
     environment:
-      DATABASE_URL: postgresql://user:password@postgres:5432/running_coach
-      OLLAMA_HOST: http://ollama:11434
-    depends_on:
-      - postgres
-      - ollama
+      DATABASE_URL: postgresql://${POSTGRES_USER:-user}:${POSTGRES_PASSWORD:-password}@postgres:5432/running_coach
+      INFINITY_URL: http://infinity:7997
+      QDRANT_URL: http://qdrant:6333
     volumes:
       - ./backend:/app
       - ./data:/data
-      - ./vector_store:/vector_store
+    depends_on:
+      - postgres
+      - qdrant
+      - infinity
 
   frontend:
     build:
       context: .
       dockerfile: docker/frontend.Dockerfile
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
@@ -48,4 +64,7 @@ services:
 
 volumes:
   postgres_data:
-  ollama_data:
+  infinity_cache:
+  qdrant_data:
+
+# patch already applied
