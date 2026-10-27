@@ -27,3 +27,7 @@ config.local.py
 settings.local.py
 *.key
 *.pem
+
+# Docker data volumes
+postgres_data/
+ollama_data/

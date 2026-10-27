@@ -1,8 +1,4 @@
-# ─────────────────────────────────────────────
-# requirements.txt — Running Coach SaaS
-# ─────────────────────────────────────────────
-
-# API Framework
+# API
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
 python-multipart==0.0.12
@@ -10,26 +6,19 @@ python-multipart==0.0.12
 # Database
 sqlalchemy==2.0.36
 alembic==1.14.0
+psycopg2-binary
 
 # Auth
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
 
-# LLM
+# LLM (API seulement)
 groq==0.11.0
 
-# Vector DB
+# Vector DB Client
 qdrant-client==1.17.1
 
-# Embedding Server
-infinity-emb[torch,uvicorn]==0.0.51
-optimum==1.16.2
-
-# RAG / Chunking
-langchain-text-splitters==0.3.8
-langchain-core==0.3.0
-
-# Document parsing
+# Document parsing 
 pdfplumber==0.11.4
 ebooklib==0.18
 beautifulsoup4==4.12.3
@@ -42,12 +31,7 @@ pydantic-settings==2.6.0
 python-dotenv==1.0.1
 httpx==0.27.2
 requests==2.32.3
-
-# Payments
 stripe==11.1.0
-
-# Email
 aiosmtplib==3.0.1
-
-# Monitoring
 prometheus-fastapi-instrumentator==7.1.0
+email-validator
