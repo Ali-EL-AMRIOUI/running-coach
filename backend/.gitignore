@@ -1,0 +1,4 @@
+running_coach.db
+*.db
+__pycache__/
+.env

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from typing import Optional
 from datetime import datetime
 
@@ -13,6 +13,8 @@ class WorkoutCreate(BaseModel):
     completed: bool = True
 
 class WorkoutResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     user_id: int
     plan_id: Optional[int]
@@ -24,6 +26,3 @@ class WorkoutResponse(BaseModel):
     perceived_effort: Optional[int]
     notes: Optional[str]
     completed: bool
-    
-    class Config:
-        from_attributes = True

@@ -121,3 +121,13 @@ class WorkoutLog(Base):
     # Relationships
     user             = relationship("User", back_populates="workout_logs")
     plan             = relationship("TrainingPlan", back_populates="workout_logs")
+
+
+class AppFeedback(Base):
+    __tablename__ = "app_feedback"
+
+    id          = Column(Integer, primary_key=True, index=True)
+    user_id     = Column(Integer, ForeignKey("users.id"), index=True, nullable=True)
+    category    = Column(String, nullable=False)   # bug, feature_request, general
+    message     = Column(Text, nullable=False)
+    created_at  = Column(DateTime(timezone=True), server_default=func.now())
