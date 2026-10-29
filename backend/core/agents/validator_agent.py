@@ -90,6 +90,7 @@ class ValidatorAgent:
         plan_data: dict,
         request,
         zones: dict = None,     # kept for backward compatibility, no longer used
+        goal_dist_km: float = 21.0975,
     ) -> Tuple[bool, List[str]]:
 
         logger.info("ValidatorAgent: structure + consistency validation...")
@@ -226,7 +227,7 @@ class ValidatorAgent:
         hard = validate_plan_hard_limits(
             plan_weeks   = plan_data.get("weeks", []),
             request      = request,
-            goal_dist_km = 21.0975,
+            goal_dist_km = goal_dist_km,
         )
         errors.extend(hard.get("violations", []))
         warnings.extend(hard.get("warnings",  []))

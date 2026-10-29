@@ -30,7 +30,7 @@ def log_workout(
     db.commit()
     db.refresh(new_workout)
     
-    return WorkoutResponse.from_orm(new_workout)
+    return WorkoutResponse.model_validate(new_workout)
 
 @router.get("/", response_model=List[WorkoutResponse])
 def get_workouts(

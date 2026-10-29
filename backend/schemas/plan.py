@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 from datetime import date, datetime
 
@@ -71,13 +71,12 @@ class TrainingPlanSchema(BaseModel):
 # 3. API HTTP RESPONSE
 # ==========================================
 class PlanResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     distance: str
     target_time: Optional[str] = None  # Format "hh:mm:ss" for frontend
     weeks: int
     plan: dict  # Will contain the serialized TrainingPlanSchema object as dict
     total_volume: float
-    created_at: datetime 
-
-    class Config:
-        from_attributes = True
+    created_at: datetime

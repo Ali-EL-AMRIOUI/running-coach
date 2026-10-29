@@ -30,4 +30,7 @@ settings.local.py
 
 # Docker data volumes
 postgres_data/
-ollama_data/
+ollama_data/running_coach.db
+*.db
+__pycache__/
+.env

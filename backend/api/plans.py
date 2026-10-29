@@ -4,48 +4,39 @@ api/plans.py
 
 import logging
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session as SQLAlchemySession
-from typing import Optional
-from fastapi.responses import JSONResponse
 
 from db.database import get_db
-from db import crud
+from db import crud, models
 from schemas.plan import PlanRequest, TrainingPlanSchema
 from core.agents.orchestrator import AgentOrchestrator
+from utils.auth import get_current_user
 
 logger = logging.getLogger(__name__)
 
-router   = APIRouter(prefix="/plans", tags=["Training Plans"])
-security = HTTPBearer(auto_error=False)
-
-
-def get_current_user_id(credentials, db) -> int:
-    # TODO: décoder JWT
-    return 1
+router = APIRouter(prefix="/plans", tags=["Training Plans"])
 
 
 @router.post("/generate")
 def generate_plan(
     request: PlanRequest,
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    current_user: models.User = Depends(get_current_user),
     db: SQLAlchemySession = Depends(get_db),
 ):
-    user_id = get_current_user_id(credentials, db)
     try:
-        orchestrator = AgentOrchestrator(db=db, user_id=user_id)
+        orchestrator = AgentOrchestrator(db=db, user_id=current_user.id)
         plan_data    = orchestrator.run_workflow(request)
 
-        # Sauvegarde DB
+        # Save to DB
         saved = crud.save_plan(
             db        = db,
-            user_id   = user_id,
+            user_id   = current_user.id,
             plan_data = plan_data,
             distance  = request.goal_distance,
             goal_date = request.goal_date,
         )
 
-        # Retourner le plan + l'ID pour le frontend
+        # Return the plan + its ID for the frontend
         return {
             "id":             saved.id,
             "coach_analysis": plan_data.get("coach_analysis", ""),
@@ -54,17 +45,16 @@ def generate_plan(
         }
 
     except Exception as e:
-        logger.error(f"❌ Erreur : {e}")
+        logger.error(f"❌ Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/")
 def get_all_plans(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    current_user: models.User = Depends(get_current_user),
     db: SQLAlchemySession = Depends(get_db),
 ):
-    user_id = get_current_user_id(credentials, db)
-    plans   = crud.get_user_plans(db, user_id)
+    plans = crud.get_user_plans(db, current_user.id)
     return [
         {
             "id":           p.id,
@@ -80,22 +70,20 @@ def get_all_plans(
 @router.get("/{plan_id}")
 def get_plan(
     plan_id: int,
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    current_user: models.User = Depends(get_current_user),
     db: SQLAlchemySession = Depends(get_db),
 ):
-    user_id = get_current_user_id(credentials, db)
-    plan    = crud.get_plan(db, plan_id, user_id)
+    plan = crud.get_plan(db, plan_id, current_user.id)
     if not plan:
-        raise HTTPException(status_code=404, detail="Plan non trouvé")
+        raise HTTPException(status_code=404, detail="Plan not found")
 
     plan_json = plan.plan if isinstance(plan.plan, dict) else {}
     return {
         "id":             plan.id,
         "distance":       plan.distance,
         "weeks_count":    plan.weeks_count,
-        "total_km":       plan.total_volume,
-        "coach_analysis": plan_json.get("coach_analysis", plan.coach_analysis or ""),
         "total_km":       plan_json.get("total_km", plan.total_volume),
+        "coach_analysis": plan_json.get("coach_analysis", plan.coach_analysis or ""),
         "weeks":          plan_json.get("weeks", []),
         "created_at":     plan.created_at.isoformat() if plan.created_at else None,
     }
@@ -106,26 +94,24 @@ def submit_feedback(
     plan_id: int,
     rating: int,
     feedback: str = "",
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    current_user: models.User = Depends(get_current_user),
     db: SQLAlchemySession = Depends(get_db),
 ):
-    user_id = get_current_user_id(credentials, db)
     if not 1 <= rating <= 5:
-        raise HTTPException(status_code=400, detail="Rating entre 1 et 5")
-    plan = crud.update_plan_feedback(db, plan_id, user_id, rating, feedback)
+        raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
+    plan = crud.update_plan_feedback(db, plan_id, current_user.id, rating, feedback)
     if not plan:
-        raise HTTPException(status_code=404, detail="Plan non trouvé")
-    return {"message": "Feedback enregistré", "plan_id": plan_id}
+        raise HTTPException(status_code=404, detail="Plan not found")
+    return {"message": "Feedback recorded", "plan_id": plan_id}
 
 
 @router.delete("/{plan_id}")
 def delete_plan(
     plan_id: int,
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    current_user: models.User = Depends(get_current_user),
     db: SQLAlchemySession = Depends(get_db),
 ):
-    user_id = get_current_user_id(credentials, db)
-    deleted = crud.delete_plan(db, plan_id, user_id)
+    deleted = crud.delete_plan(db, plan_id, current_user.id)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Plan non trouvé")
-    return {"message": "Plan supprimé"}
+        raise HTTPException(status_code=404, detail="Plan not found")
+    return {"message": "Plan deleted"}

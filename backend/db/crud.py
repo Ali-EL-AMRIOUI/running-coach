@@ -62,10 +62,10 @@ def save_plan(
     total_volume    = plan_data.get("total_km", 0.0)
     coach_analysis  = plan_data.get("coach_analysis", "")
     metadata        = plan_data.get("metadata", {})
-    pace_zones      = metadata.get("zones", {})
-    level           = metadata.get("level", None)
+    pace_zones      = metadata.get("safety_warnings", [])
+    level           = metadata.get("athlete_level", None)
     is_valid        = metadata.get("is_valid", True)
-    validation_errors = metadata.get("validation_errors", [])
+    validation_errors = metadata.get("hard_violations", [])
 
     # Clean plan (remove internal metadata before saving)
     plan_to_save = {k: v for k, v in plan_data.items() if k != "metadata"}

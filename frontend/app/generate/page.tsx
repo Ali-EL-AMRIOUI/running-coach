@@ -134,7 +134,7 @@ export default function GeneratePage() {
           <div className="border-b border-gray-700 pb-4">
             <h2 className="text-xl font-bold text-blue-400 mb-4">4. Goal</h2>
             <div className="grid grid-cols-2 gap-4">
-              <div><label className="block text-gray-400 mb-1">Target distance *</label><select name="goal_distance" value={form.goal_distance} onChange={handleChange} className="input w-full"><option value="5k">5 km</option><option value="10k">10 km</option><option value="half-marathon">Half marathon</option><option value="marathon">Marathon</option></select></div>
+              <div><label className="block text-gray-400 mb-1">Target distance *</label><select name="goal_distance" value={form.goal_distance} onChange={handleChange} className="input w-full"><option value="5k">5 km</option><option value="10k">10 km</option><option value="half">Half marathon</option><option value="marathon">Marathon</option></select></div>
               <div><label className="block text-gray-400 mb-1">Target time</label><input type="text" name="goal_time" placeholder="hh:mm:ss" value={form.goal_time} onChange={handleChange} className="input w-full" /></div>
               <div><label className="block text-gray-400 mb-1">Goal date *</label><input type="date" name="goal_date" value={form.goal_date} onChange={handleChange} className="input w-full" required /></div>
               <div><label className="block text-gray-400 mb-1">Availability (sessions/week) *</label><input type="number" name="availability" value={form.availability} onChange={handleChange} className="input w-full" required /></div>

@@ -14,7 +14,7 @@ export const PlanSchema = z.object({
   record_1500m: z.string().optional(),
   record_5000m: z.string().optional(),
   record_10000m: z.string().optional(),
-  record_half: z.string().regex(/^\d{1,2}:\d{2}:\d{2}$/, "Format: hh:mm:ss"),
+  record_half: z.string().regex(/^\d{1,2}:\d{2}:\d{2}$/, "Format: hh:mm:ss").optional(),
   record_marathon: z.string().optional(),
 
   // Training Load
