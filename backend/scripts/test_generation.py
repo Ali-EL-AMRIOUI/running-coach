@@ -79,7 +79,7 @@ def validate_paces(plan: dict, half_pace_s: float) -> tuple[bool, list]:
                     )
 
                 # Too slow for Easy Run?
-                if stype == "RUN" and pace_s > ef_max_s + 30:
+                if stype == "EASY_RUN" and pace_s > ef_max_s + 30:
                     errors.append(
                         f"Week {w_num} Day {d_num} {slot}: "
                         f"pace {pace_str} very slow for a RUN"

@@ -20,7 +20,6 @@ class UserProfile(BaseModel):
     best_5k: Optional[int] = None
     best_10k: Optional[int] = None
     goal_distance: Optional[str] = None
-    goal_time: Optional[int] = None
     training_days: Optional[int] = 4
 
 class UserResponse(BaseModel):

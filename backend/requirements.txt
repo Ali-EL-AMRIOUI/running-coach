@@ -35,4 +35,4 @@ requests==2.32.3
 stripe==11.1.0
 aiosmtplib==3.0.1
 prometheus-fastapi-instrumentator==7.1.0
-email-validator
+email-validatorlangchain-text-splitters==0.3.2

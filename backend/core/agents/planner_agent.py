@@ -135,11 +135,10 @@ class PlannerAgent(BaseAgent):
                 last_error = e
                 logger.error(f"    Attempt {attempt+1}: {e}")
                 if "429" in str(e):
-                    # Rate limit - wait before retrying
-                    wait = 60 * (attempt + 1)
-                    logger.warning(f"    Rate limit - waiting {wait}s...")
-                    time.sleep(wait)
-                    raise   # do not retry on 429 - propagate to orchestrator
+                    # Rate limit - propagate immediately to orchestrator,
+                    # which handles retries at a higher level (across blocks).
+                    logger.warning("    Rate limit hit - propagating to orchestrator")
+                    raise
         raise last_error
 
     # SINGLE LLM CALL

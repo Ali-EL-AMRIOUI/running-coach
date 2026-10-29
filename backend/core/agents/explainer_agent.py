@@ -66,12 +66,8 @@ Use only the sessions and paces present in the plan.
 Do not mention any pace you have not seen in the data."""
 
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.7,
-            )
-            return response.choices[0].message.content
+            messages = [{"role": "user", "content": prompt}]
+            return self.execute_with_fallback(messages)
         except Exception as e:
             logger.error(f"ExplainerAgent: {e}")
             return (

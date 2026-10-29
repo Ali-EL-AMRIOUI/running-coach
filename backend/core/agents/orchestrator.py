@@ -101,7 +101,7 @@ class AgentOrchestrator:
         """
         # Attempt 1: explicit PLANNER_DIRECTIVES block
         match = re.search(
-            r"PLANNER_DIRECTIVES\s*:\s*(\{.*?\})",
+            r"DIRECTIVES_PLANNER\s*:\s*(\{.*?\})",
             analysis_text, re.DOTALL
         )
         if match:
@@ -285,7 +285,7 @@ class AgentOrchestrator:
 
             # JSON structure validation
             is_valid, struct_errors = self.validator.run(
-                normalized, request, zones={}
+                normalized, request, zones={}, goal_dist_km=dist_km
             )
             if not is_valid:
                 logger.warning(f"Invalid structure: {struct_errors[:3]}")
